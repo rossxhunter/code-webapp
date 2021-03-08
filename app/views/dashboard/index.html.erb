@@ -1,0 +1,74 @@
+<h2>Class: <%= @current_class.name %></h2>
+
+<div class="row">
+  <div class="col-md-3">
+    <div class="card">
+      <div class="card-header">
+        Courses
+      </div>
+      <ul class="list-group list-group-flush dashboard-list-group -courses">
+        <% @current_class.courses.each do |course| %>
+          <li class="list-group-item dashboard-list-group-item -course <% if course == @current_course %>-selected<% end %>" data-course-id="<%= course.id %>">
+            <%= course.name %>
+          </li>
+          <li class="list-group-item dashboard-list-group-item-info -course" <% unless course == @current_course %>style="display: none;"<% end %>>
+            <%= course.description %>
+          </li>
+        <% end %>
+      </ul>
+    </div>
+  </div>
+  <div class="col-md-3">
+    <div class="card">
+      <div class="card-header">
+        Tracks
+      </div>
+      <ul class="list-group list-group-flush dashboard-list-group -tracks">
+        <% if @current_course %>
+          <% @current_course.tracks.each do |track| %>
+            <li class="list-group-item dashboard-list-group-item -track <% if track == @current_track %>-selected<% end %>" data-track-id="<%= track.id %>">
+              <%= track.name %>
+            </li>
+            <li class="list-group-item dashboard-list-group-item-info -track" <% unless track == @current_track %>style="display: none;"<% end %>>
+              <%= track.description %>
+            </li>
+          <% end %>
+        <% end %>
+      </ul>
+    </div>
+  </div>
+
+  <div class="col-md-3">
+    <div class="card">
+      <div class="card-header">
+        Code Lessons
+      </div>
+      <ul class="list-group list-group-flush dashboard-list-group -code-lessons">
+        <% if @current_track %>
+          <% @current_track.code_lessons.each do |code_lesson| %>
+            <li class="list-group-item dashboard-list-group-item -code-lesson <% if code_lesson == @current_code_lesson %>-selected<% end %>" data-code-lesson-id="<%= code_lesson.id %>">
+              <%= code_lesson.name %>
+            </li>
+            <li class="list-group-item dashboard-list-group-item-info -code-lesson" <% unless code_lesson == @current_code_lesson %>style="display: none;"<% end %>>
+              <%= link_to code_lesson.name, code_lesson %>
+            </li>
+          <% end %>
+        <% end %>
+      </ul>
+    </div>
+  </div>
+
+  <div class="col-md-3">
+    <div class="card">
+      <div class="card-header">
+        Students
+      </div>
+      <div class="card-body">
+        <div class="card border-secondary mb-3" style="max-width: 18rem; padding:10px">
+          <h5 class="card-title">Special title treatment</h5>
+          <a href="#" class="btn btn-info btn-sm" style="width: auto">insight</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

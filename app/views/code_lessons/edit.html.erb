@@ -1,0 +1,84 @@
+<ul class="nav nav-tabs" id="code-lesson-tabs" role="tablist">
+  <li class="nav-item">
+    <a class="nav-link active" id="lesson-code-tab" data-toggle="tab" href="#lesson_code_editor_cont" role="tab" aria-controls="lesson-code-editor" aria-selected="true">Lesson Code</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" id="correctness-test-tab" data-toggle="tab" href="#correctness_test_editor_cont" role="tab" aria-controls="profile" aria-selected="false">Correctness Tests</a>
+  </li>
+  </ul>
+  <div class="tab-content" id="">
+    <div class="tab-pane fade show active" id="lesson_code_editor_cont" role="tabpanel" aria-labelledby="home-tab">
+      <div id="editor" class="teacher-editor"><%= @code_lesson.starting_code %></div>
+    </div>
+    <div class="tab-pane fade" id="correctness_test_editor_cont" role="tabpanel" aria-labelledby="correctness-test-tab">
+      <div id="correctness_test_editor"><%= @code_lesson.correctness_test %></div>
+    </div>
+  </div>
+</ul>
+
+<%= form_for(@code_lesson) do |f| %>
+  <div id="code_lesson_sidebar">
+    <div class="container form">
+      <% if @code_lesson.errors.any? %>
+        <div id="error_explanation">
+          <h2><%= pluralize(@code_lesson.errors.count, "error") %> prohibited this code lesson from being saved:</h2>
+
+          <ul>
+            <% @code_lesson.errors.full_messages.each do |message| %>
+              <li><%= message %></li>
+            <% end %>
+          </ul>
+        </div>
+      <% end %>
+
+      <div class="form-group">
+        <%= f.label :name, 'Title' %>
+        <%= f.text_field :name, class: 'form-control' %>
+      </div>
+
+      <div class="form-check">
+        <%= f.check_box :visible, class: 'form-check-input' %>
+        <%= f.label :visible, 'This lesson is visible to students', class: 'form-check-label' %>
+      </div>
+
+      <div class="form-group">
+        <%= f.label :instructions %>
+        <%= f.text_area :instructions, class: 'form-control', rows: 15 %>
+      </div>
+
+      <div class="form-group">
+        <%= f.label :hint %>
+        <%= f.text_area :hint, class: 'form-control', rows: 5 %>
+      </div>
+
+      <div class="form-check -hint-fields">
+        Display hint after <%= f.number_field :display_hint_after_attempts %> attempts
+        <small class="form-text text-muted">Leave blank to never display hint.</small>
+      </div>
+
+      <div class="form-check -hint-fields">
+        Display hint after <%= f.number_field :display_hint_after_minutes %> minutes
+        <small class="form-text text-muted">Leave blank to never display hint.</small>
+      </div>
+
+      <%= f.hidden_field :correctness_test, class: 'form-control', id: 'correctness-test-code', rows: 5 %>
+      <%= f.hidden_field :starting_code, id: 'user-code' %>
+    </div>
+    <div class="container correctness-test-helper" style="display: none;">
+      <h3>Correctness Tests</h3>
+      <p>This is how it is automatically determined if the submitted code passes the lesson or not.</p>
+
+      <p>You will have access to all the variables used by the student after the execution of the program is complete.</p>
+
+      <p>The correctness test must be written in the same language as the code lesson.</p>
+
+      <p>Return either true or false using the students variables to either pass or fail their submission.</p>
+    </div>
+  </div>
+
+  <div id="code_lesson_submit_container">
+    <div class="center">
+      <%= f.submit class: 'code-lesson-submit' %>
+    </div>
+  </div>
+<% end %>

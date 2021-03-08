@@ -1,0 +1,78 @@
+<h1 class="text-center header-padding"><%= @organisation_class.long_name %></h1>
+
+<% if !@courses.any? %>
+  <div class="nothinghere">
+    No Courses Here
+  </div>
+<% end %>
+
+<div class="row">
+  <% @courses.each do |course| %>
+    <div class="col-md-4">
+      <div class="card text-center">
+        <div class="card-body">
+          <h5 class="card-title"><%= link_to course.name, course %></h5>
+          <p class="card-text"><%= course.description %></p>
+        </div>
+        <% if teacher_signed_in? %>
+          <div class="card-footer text-muted">
+            <%= link_to 'Assign to Students', '#', class: 'btn btn-primary open-target-modal', data: { target: "assign_students_course_modal_#{course.id}" } %>
+          </div>
+        <% end %>
+      </div>
+      </br>
+    </div>
+  <% end %>
+</div>
+
+<% @courses.each do |course| %>
+  <div class="modal fade" id="assign_students_course_modal_<%= course.id %>" tabindex="-1" role="dialog" aria-labelledby="new_code_lesson_modal_title" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <%= form_tag(assign_course_to_classes_path(course)) do %>
+          <div class="modal-header">
+            <h5 class="modal-title" id="new_code_lesson_modal_title">Assing <%= course.name %> as homework to a class</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="form-group">
+              Assign to class:
+
+              <div class="form-control">
+                <% course.organisation_classes.each do |org_class| %>
+                  <div class="form-check">
+                    <%= check_box_tag "organisation_classes[#{course.id}][#{org_class.id}]", 1, false, class: 'form-check-input' %>
+                    <label for="organisation_classes_<%= course.id %>_<%= org_class.id %>" class="form-check-label">
+                      <%= org_class.name %>
+                    </label>
+                  </div>
+                <% end %>
+              </div>
+
+              <div class="form-group">
+                <label>Date start</label>
+                <div class="form-control">
+                  <%= datetime_select 'assignment', 'date_start' %>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label>Date due</label>
+                <div class="form-control">
+                  <%= datetime_select 'assignment', 'date_due' %>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <%= submit_tag 'Assign to Class', class: 'btn btn-primary' %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+<% end %>

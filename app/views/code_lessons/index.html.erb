@@ -1,0 +1,77 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Lessons</h1>
+<br />
+<table class="table table-striped table-hover">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Language</th>
+      <th>Visible</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% if @code_lessons %>
+      <% @code_lessons.each do |lesson| %>
+        <tr>
+          <td><%= lesson.name %></td>
+          <td><%= lesson.language.name %></td>
+          <td><%= lesson.visible %></td>
+          <td><%= link_to 'Show', code_lesson_path(lesson) %> |
+              <%= link_to 'Edit', edit_code_lesson_path(lesson) %> |
+              <%= link_to 'Destroy', code_lesson_path(lesson), method: :delete, data: { confirm: 'Are you sure?' } %>
+          </td>
+        </tr>
+      <% end %>
+    <% end %>
+  </tbody>
+</table>
+
+<br />
+
+<%= link_to 'New Lesson', '#', id: 'new_code_lesson_button', class: "btn btn-primary" %>
+
+<div class="modal fade" id="new_code_lesson_modal" tabindex="-1" role="dialog" aria-labelledby="new_code_lesson_modal_title" aria-hidden="true" data-show-on-load="<% if defined?(status) && status == 'error' %>true<% else %>false<% end %>">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <%= form_for([@track, @code_lesson]) do |f| %>
+        <div class="modal-header">
+          <h5 class="modal-title" id="new_code_lesson_modal_title"><%= @current_track.name %>: New Lesson</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <% if @code_lesson.errors.any? %>
+            <div id="error_explanation">
+              <h2><%= pluralize(@code_lesson.errors.count, "error") %> prohibited this code lesson from being saved:</h2>
+
+              <ul>
+              <% @code_lesson.errors.full_messages.each do |message| %>
+                <li><%= message %></li>
+              <% end %>
+              </ul>
+            </div>
+          <% end %>
+
+          <div class="form-group">
+            <%= f.label :name %>
+            <%= f.text_field :name, class: 'form-control' %>
+          </div>
+
+          <div class="form-group">
+            <%= f.label :language %>
+            <%= f.collection_select :language_id, Language.all, :id, :name, { prompt: true }, class: "form-control" %>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <%= f.submit class: 'btn btn-primary' %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>

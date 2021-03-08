@@ -1,0 +1,33 @@
+<h2 class="display-4"><%= current_student.name %>: Old Assignments</h2>
+
+<div class="row">
+  <div class="col-md-12">
+    <% if current_student.old_courses().any? %>
+      <% current_student.old_courses().each do |course| %>
+        <div class="card">
+          <div class="card-header">
+            <%= course.name %>
+          </div>
+          <ul class="list-group list-group-flush student-dashboard-list-group -track">
+            <% course.tracks.each do |track| %>
+              <li class="list-group-item student-dashboard-list-group-item -track">
+                <%= track.name %>
+              </li>
+              <ul class="list-group list-group-flush student-dashboard-list-group-item-info -track" style="display: none;">
+                <% track.code_lessons.each do |lesson| %>
+                  <li class="list-group-item">
+                    <% assignment = lesson.get_assignment_for(current_student) %>
+                    <div class="float-right" data-toggle="tooltip" data-placement="top" title="<%= assignment.date_due.strftime("%H:%S %a #{assignment.date_due.day.ordinalize} %b %Y") %>">
+                      Due in <%= time_ago_in_words assignment.date_due %>
+                    </div>
+                    <%= link_to lesson.name, lesson %>
+                  </li>
+                <% end %>
+              </ul>
+            <% end %>
+          </ul>
+        </div>
+      <% end %>
+    <% end %>
+  </div>
+</div>

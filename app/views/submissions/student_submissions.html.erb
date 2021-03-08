@@ -1,0 +1,21 @@
+<h4>Submissions for lesson: <%= @code_lesson.name %>, student: <%= @student.name%></h4>
+<table class="table table-hover">
+  <thead>
+    <tr>
+      <th scope="col">Time Completed</th>
+      <th scope="col">Hint Used</th>
+      <th scope="col">Correct</th>
+      <th scope="col"></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @submissions.each do |submission| %>
+    <tr>
+      <td><%= submission.created_at %></td>
+      <td><% if submission.used_hint %>Yes<% else %>No<% end %></td>
+      <td><% if submission.success %>Yes<% else %>No<% end %></td>
+      <td><%= link_to "View", submission_path(submission), class:"btn btn-sm float-sm-right btn-success" %></td>
+    </tr>
+    <% end %>
+  </tbody>
+</table>

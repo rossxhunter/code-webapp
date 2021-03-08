@@ -1,0 +1,13 @@
+<script>
+  var correctness_editor_id = 'correctness_test_editor';
+  var correctness_editor = ace.edit(correctness_editor_id);
+  correctness_editor.setTheme("ace/theme/monokai");
+  correctness_editor.getSession().setMode("ace/mode/<%= escape_javascript(@code_lesson.language.ace_slug) %>");
+  document.getElementById(correctness_editor_id).style.fontSize='16px';
+  correctness_editor.getSession().setTabSize(2);
+  correctness_editor.getSession().setUseWrapMode(true);
+  correctness_editor.getSession().setWrapLimitRange();
+  correctness_editor.getSession().on('change', function(e) {
+    $('#correctness-test-code').val(correctness_editor.getValue());
+  });
+</script>

@@ -1,0 +1,27 @@
+<p id="notice"><%= notice %></p>
+
+<div class="row">
+  <div class="col-md-4">
+    <div class="card text-center">
+      <div class="card-header">
+        <%= @track_template.name %>
+      </div>
+      <div class="card-body">
+        <%= @track_template.description %>
+      </div>
+      <div class="card-footer text-muted">
+        <%= pluralize(@track_template.code_lesson_templates.length, 'Code Lesson') %>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-8">
+    <ul class="list-group">
+      <% @track_template.code_lesson_templates.each do |lesson| %>
+        <li class="list-group-item">
+          <div class="float-right"><%= lesson.language.name %></div>
+          <%= link_to lesson.name, lesson %>
+        </li>
+      <% end %>
+    </ul>
+  </div>
+</div>

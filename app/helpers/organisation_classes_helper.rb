@@ -1,0 +1,2 @@
+module OrganisationClassesHelper
+end

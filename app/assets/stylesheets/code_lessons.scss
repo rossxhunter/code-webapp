@@ -1,0 +1,382 @@
+$header-height: 55px;
+$sidebar-width: 350px;
+$console-height: 150px;
+$html-iframe-height: 40%;
+$submit-container-height: 70px;
+
+#editor {
+  position: fixed;
+  top: $header-height;
+  right: $sidebar-width;
+  bottom: $console-height;
+  left: 0;
+  z-index: 2;
+}
+
+#correctness_test_editor {
+  position: fixed;
+  top: 97px;
+  right: $sidebar-width;
+  bottom: 0;
+  left: 0;
+  z-index: 2;
+}
+
+#editor.teacher-editor {
+  top: 97px;
+  bottom: 0;
+}
+
+#code_lesson_sidebar {
+  position: fixed;
+  right: 0;
+  bottom: $submit-container-height;
+  top: $header-height;
+  width: $sidebar-width;
+  background: #f2f2f2;
+  overflow-y: scroll;
+  overflow-x: hidden;
+
+  .code-lesson-tab-content {
+    height: 100%;
+  }
+
+  .container {
+    padding-left: 20px;
+    padding-right: 20px;
+    background: #fff;
+    min-height: 100%;
+    padding-bottom: 100px;
+
+    &.option-buttons-container {
+      margin-top: 20px;
+      margin-bottom: 20px;
+    }
+
+    .submission-info {
+
+      .fact {
+        margin-top: 20px;
+
+        &:first-child {
+          margin-top: 0;
+        }
+      }
+    }
+
+    .code-lesson-instructions {
+      font-family: 'Roboto Mono', monospace;
+      font-size: 1.1em;
+    }
+  }
+}
+
+#code_lesson_submit_container {
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  width: $sidebar-width;
+  height: $submit-container-height;
+  border-top: 1px solid #ababab;
+  background: #f2f2f2;
+}
+
+.code-lesson-submit,
+.code-lesson-hint {
+  text-align: center;
+  padding: 15px 20px;
+  color: #fff;
+  border-radius: 3px;
+  text-transform: uppercase;
+  font-weight: 700;
+  font-family: 'Roboto Mono', monospace;
+}
+
+.code-lesson-submit:hover,
+.code-lesson-hint:hover {
+  text-decoration: none;
+  cursor: pointer;
+  color: #fff;
+}
+
+.code-lesson-submit {
+  display: inline-block;
+  width: 340px;
+  margin-top: 6px;
+  margin-left: 5px;
+  background: #2ecc71;
+  border: 1px solid #27ae60;
+}
+
+.code-lesson-submit.shrink {
+  width: 250px;
+}
+
+.code-lesson-submit:hover {
+  background: #27ae60;
+}
+
+.code-lesson-hint:hover {
+  background: #8e44ad;
+}
+
+.code-lesson-hint {
+  position: relative;
+  display: none;
+  right: 0;
+  background: #9b59b6;
+  width: 85px;
+}
+
+.code-lesson-hint.display {
+  display: inline-block;
+}
+
+#code_lesson_reset_container {
+  position: fixed;
+  bottom: $submit-container-height;
+  right: $sidebar-width / 2;
+  width: $sidebar-width / 2;
+  height: $submit-container-height;
+}
+
+.code-lesson-reset {
+  text-align: center;
+  padding: 15px 20px;
+  color: #fff;
+  border-radius: 3px;
+  text-transform: uppercase;
+  font-weight: 700;
+  font-family: 'Roboto Mono', monospace;
+
+  display: inline-block;
+  margin-left: 5%;
+  margin-top: 5%;
+  background: #ed5d09;
+  border: 1px solid #ce5006;
+}
+.code-lesson-reset:hover {
+  text-decoration: none;
+  color: #fff;
+  background: #ce5006;
+}
+
+#code_lesson_next_container {
+  position: fixed;
+  bottom: $submit-container-height;
+  right: 0;
+  width: $sidebar-width / 2;
+  height: $submit-container-height;
+}
+.code-lesson-next {
+  text-align: center;
+  padding: 15px 20px;
+  color: #fff;
+  border-radius: 3px;
+  text-transform: uppercase;
+  font-weight: 700;
+  font-family: 'Roboto Mono', monospace;
+
+  display: inline-block;
+  margin-left: 6%;
+  margin-top: 5%;
+  background: #0eaeba;
+  border: 1px solid #098c96;
+}
+.code-lesson-next:hover {
+  text-decoration: none;
+  color: #fff;
+  background: #098c96;
+}
+
+#reset-next-container {
+  position: fixed;
+  right: 0;
+  bottom: $submit-container-height;
+  height: $submit-container-height;
+  width: $sidebar-width;
+}
+
+#success-message-icon-container {
+  position: fixed;
+  bottom: 0;
+  right: $sidebar-width;
+  width: 250px;
+  height: $submit-container-height;
+  background: #8c8c8c;
+  border-radius: 3px;
+  z-index: 99;
+
+}
+.success-icon {
+  margin-top: 1%;
+  margin-left: 1%;
+  width: 64px;
+  height: 64px;
+}
+
+#success-message-container {
+  position: fixed;
+  right: $sidebar-width;
+  bottom: 0;
+  color: #fff;
+  width:  180px;
+  height: $submit-container-height;
+  text-align: center;
+  padding-top: 0.5%;
+
+}
+
+.success-message {
+  text-align: center;
+  font-size: 40px;
+}
+
+#failure-message-icon-container {
+  position: fixed;
+  bottom: 0;
+  right: $sidebar-width;
+  width: 250px;
+  height: $submit-container-height;
+  background: #8c8c8c;
+  border-radius: 3px;
+  z-index: 99;
+
+}
+.failure-icon {
+  margin-top: 1%;
+  margin-left: 1%;
+  width: 64px;
+  height: 64px;
+}
+
+#failure-message-container {
+  position: fixed;
+  right: $sidebar-width;
+  bottom: 0;
+  color: #fff;
+  width:  180px;
+  height: $submit-container-height;
+  text-align: center;
+  padding-top: 0.5%;
+
+}
+
+.failure-message {
+  text-align: center;
+  font-size: 38px;
+}
+
+
+/**
+ * jQConsole
+ */
+ #console {
+   position: fixed;
+   bottom: 0;
+   left: 0;
+   right: $sidebar-width;
+   height: $console-height;
+   background-color: #000;
+ }
+
+ .jqconsole {
+   padding: 10px;
+   background-color: #000;
+ }
+ /* The cursor. */
+ .jqconsole-cursor {
+   background-color: gray;
+   margin-bottom: 10px;
+ }
+ /* The cursor color when the console looses focus. */
+ .jqconsole-blurred .jqconsole-cursor {
+     background-color: #666;
+ }
+ /* The current prompt text color */
+ .jqconsole-prompt {
+   color: #0d0;
+ }
+ /* The command history */
+ .jqconsole-old-prompt {
+     color: #0b0;
+     font-weight: normal;
+ }
+ /* The text color when in input mode. */
+ .jqconsole-input {
+     color: #dd0;
+ }
+ /* Previously entered input. */
+ .jqconsole-old-input {
+     color: #bb0;
+     font-weight: normal;
+ }
+ /* The text color of the output. */
+ .jqconsole-output {
+     color: white;
+ }
+
+   /*
+    * Custom Styles
+    */
+   .jqconsole-output {color:#fff;}
+   .jqconsole-warning {color:#FFDC00;}
+   .jqconsole-info {color:#0074D9;}
+   .jqconsole-error {color:#FF4136;}
+   .jqconsole-success {color:#2ECC40;}
+
+
+.code-lesson-language {
+  margin-right: 30px;
+}
+
+.right-nav > .nav-item {
+  margin-right: 30px;
+}
+
+.right-nav > .nav-item:last-child {
+  margin-right: 0;
+}
+
+.form-check.-hint-fields {
+  padding: 0;
+  margin-top: 20px;
+}
+
+#code_lesson_display_hint_after_attempts {
+  width: 50px;
+}
+
+#code_lesson_display_hint_after_minutes {
+  width: 50px;
+}
+
+#hint-container {
+  position: fixed;
+  bottom: $console-height;
+  right: $sidebar-width;
+  width: 300px;
+  height: 200px;
+  z-index: 999;
+}
+
+.collapse .card {
+  margin-top: 10px;
+}
+
+.display-hint {
+  margin-top: 20px;
+}
+
+.chat-messages {
+  font-size: 0.8em;
+}
+
+.chat-message {
+  margin-bottom: 20px;
+  margin-top: 20px;
+}
+
+.chat-message-icon {
+  width: 40px;
+}

@@ -1,0 +1,68 @@
+<div id="editor"><%= @submissions && @submissions.any? ? @submissions.first.code : @code_lesson.starting_code %></div>
+<div id="console"></div>
+<div id="hint-container"></div>
+
+<div id="code_lesson_sidebar">
+  <div class="container">
+    <h3><%= @code_lesson.name %></h3>
+
+    <h5>Instructions</h5>
+
+    <div class="code-lesson-instructions">
+      <%= @instructions %>
+    </div>
+
+    <div class="collapse" id="collapse_hint">
+      <div class="card card-body"></div>
+    </div>
+
+    <input type="hidden" value="" id="user-code">
+
+    <ul class="list-unstyled chat-messages">
+      <% @chat.chat_messages.each do |message| %>
+        <% if message.messageable_type == 'Teacher' %>
+          <li class="media chat-message">
+            <div class="media-body">
+              <h6><%= message.messageable.name %></h6>
+              <%= message.message %>
+            </div>
+            <%= image_tag "icon-person-128.png", class: 'chat-message-icon' %>
+          </li>
+        <% else %>
+          <li class="media chat-message">
+            <%= image_tag "icon-person-128.png", class: 'chat-message-icon' %>
+            <div class="media-body">
+              <h6><%= message.messageable.name %></h6>
+              <%= message.message %>
+            </div>
+          </li>
+        <% end %>
+      <% end %>
+    </ul>
+
+    <%= form_for @message, remote: true, authenticity_token: true do |f| %>
+      <%= f.label :message %>:
+      <%= f.text_area :message, class: "form-control", data: { textarea: "message" } %>
+
+      <%= f.hidden_field :chat_id, value: @chat.id %>
+      <%= f.submit "send", class: "btn btn-primary" %>
+    <% end %>
+  </div>
+</div>
+
+<div id="code_lesson_submit_container">
+  <% if student_signed_in? %>
+    <%= link_to 'Submit Code', '#', id: 'code-lesson-submit-code', class: 'code-lesson-submit', data: { code_lesson_id: @code_lesson.id } %>
+    <%= link_to 'Hint', '#', class: 'code-lesson-hint', data: { code_lesson_id: @code_lesson.id, student_id: current_student.id } %>
+  <% end %>
+</div>
+
+<% content_for :channels do %>
+  <%= javascript_include_tag 'channels/channels' %>
+<% end %>
+
+<% content_for :extra_js do %>
+  <script>
+    editor.setReadOnly(true);
+  </script>
+<% end %>

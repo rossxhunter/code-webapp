@@ -1,0 +1,62 @@
+<h1>New Lesson</h1>
+
+<%= form_for([@track, @code_lesson], local: true) do |form| %>
+  <% if @code_lesson.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@code_lesson.errors.count, "error") %> prohibited this code lesson from being saved:</h2>
+
+      <ul>
+      <% @code_lesson.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="form-group row">
+    <%= form.label :name, class: 'col-sm-2 col-form-label' %>
+    <div class="col-sm-10">
+      <%= form.text_field :name, class: "form-control" %>
+    </div>
+  </div>
+
+  <div class="form-group row">
+    <%= form.label :instructions, class: 'col-sm-2 col-form-label' %>
+    <div class="col-sm-10">
+      <%= form.text_area :instructions, class: "form-control", rows: 5 %>
+    </div>
+  </div>
+
+  <div class="form-group row">
+    <%= form.label :starting_code, class: 'col-sm-2 col-form-label' %>
+    <div class="col-sm-10">
+      <%= form.text_area :starting_code, style: 'display: none;' %>
+      <div id="code_lesson_form_editor" class="form-control">
+
+      </div>
+    </div>
+  </div>
+
+  <div class="form-group row">
+    <%= form.label :language, class: 'col-sm-2 col-form-label' %>
+    <div class="col-sm-10">
+      <%= form.collection_select :language_id, Language.all, :id, :name, { prompt: true }, class: "form-control" %>
+    </div>
+  </div>
+
+  <div class="form-group row">
+    <%= form.label :order, class: 'col-sm-2 col-form-label' %>
+    <div class="col-sm-10">
+      <%= form.number_field :order, class: "form-control" %>
+    </div>
+  </div>
+
+  <%= form.hidden_field :track_id, value: 1 %>
+  <%= form.hidden_field :visible, value: true %>
+
+  <div class="form-group row">
+    <div class="actions offset-sm-2">
+      <%= form.submit class: 'btn btn-primary' %>
+    </div>
+  </div>
+<% end %>

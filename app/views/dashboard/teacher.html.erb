@@ -1,0 +1,151 @@
+<h2 class="text-center class-header">Class: <%= @current_class.name %></h2>
+
+<div class="row">
+  <div class="col-md-3">
+    <div class="card">
+      <div class="card-header">
+        Courses
+      </div>
+      <ul class="list-group list-group-flush dashboard-list-group -courses">
+        <% @current_class.courses.each do |course| %>
+          <li class="list-group-item dashboard-list-group-item -course <% if course == @current_course %>-selected<% end %>" data-course-id="<%= course.id %>">
+            <%= course.name %>
+          </li>
+          <li class="list-group-item dashboard-list-group-item-info -course" <% unless course == @current_course %>style="display: none;"<% end %>>
+            <div class="btn-group btn-group-sm">
+              <%= link_to "Insights", course_insights_path(course), class: 'btn btn-secondary' %>
+            </div>
+          </li>
+        <% end %>
+        <li class="list-group-item dashboard-list-group-item"><%= link_to 'Manage courses', organisation_class_courses_path(@current_class) %></li>
+      </ul>
+    </div>
+  </div>
+  <div class="col-md-3">
+    <div class="card">
+      <div class="card-header">
+        Tracks
+      </div>
+      <ul class="list-group list-group-flush dashboard-list-group -tracks">
+        <% if @current_course %>
+          <% @current_course.tracks.each do |track| %>
+            <li class="list-group-item dashboard-list-group-item -track <% if track == @current_track %>-selected<% end %>" data-track-id="<%= track.id %>">
+              <%= track.name %>
+            </li>
+            <li class="list-group-item dashboard-list-group-item-info -track" <% unless track == @current_track %>style="display: none;"<% end %>>
+              <div class="btn-group btn-group-sm">
+                <%= link_to "Insights", track_insights_path(track), class: 'btn btn-secondary' %>
+              </div>
+            </li>
+          <% end %>
+          <li class="list-group-item dashboard-list-group-item"><%= link_to 'Manage tracks', course_tracks_path(@current_course) %></li>
+        <% end %>
+      </ul>
+    </div>
+  </div>
+
+  <div class="col-md-3">
+    <div class="card">
+      <div class="card-header">
+        Code Lessons
+      </div>
+      <ul class="list-group list-group-flush dashboard-list-group -code-lessons">
+        <% if @current_track %>
+          <% @current_track.code_lessons.order(:order).each do |code_lesson| %>
+            <li class="list-group-item dashboard-list-group-item -code-lesson <% if code_lesson == @current_code_lesson %>-selected<% end %>" data-code-lesson-id="<%= code_lesson.id %>" data-class-id ="<%= @current_class.id %>">
+              <%= code_lesson.name %>
+            </li>
+            <li class="list-group-item dashboard-list-group-item-info -code-lesson" <% unless code_lesson == @current_code_lesson %>style="display: none;"<% end %>>
+              <div class="btn-group btn-group-sm">
+                <%= link_to "View", code_lesson, class: 'btn btn-primary' %>
+                <%= link_to "Insights", code_lesson_insights_path(code_lesson), class: 'btn btn-secondary' %>
+              </div>
+            </li>
+
+          <% end %>
+          <li class="list-group-item dashboard-list-group-item"><%= link_to 'Manage lessons', track_code_lessons_path(@current_track) %></li>
+        <% end %>
+      </ul>
+    </div>
+  </div>
+
+  <div class="col-md-3" >
+    <div class="card">
+      <div class="card-header">
+        Students
+      </div>
+      <ul class="list-group list-group-flush dashboard-list-group -students" style="overflow:scroll; height:300px;">
+        <% if @current_class %>
+          <% @current_class.students.each do |student| %>
+          <div>
+            <% if @current_code_lesson %>
+              <% all_submissions = student.get_submissions(@current_code_lesson) %>
+              <% most_recent = all_submissions.max_by(&:created_at) %>
+              <% if !most_recent.nil? %>
+                <% if most_recent.success %>
+                  <li class="list-group-item dashboard-list-group-item -student <% if student == @current_student %>-selected<% end %>" data-student-id="<%= student.id %>">
+                    <i class="fas fa-check"></i> <%= student.name %>
+                    <button type="button" class="btn btn-info btn-sm float-sm-right" data-toggle="popover" data-trigger="focus" data-placement="right" title="Submissions & Hints" data-content="Number of submissions: <%= all_submissions.size %> </br>Hint used: <% if most_recent.used_hint %>'Yes <% else %> No <% end %>" data-html="true">Info</button>
+                  </li>
+                  <li class="list-group-item dashboard-list-group-item-info -student" <% unless student == @current_student %>style="display: none;"<% end %>>
+                    <div class="btn-group btn-group-sm" role="group">
+                      <%= link_to "Insight", student_insights_path(student), class: "btn btn-sm float-sm-left btn-secondary" %>
+                      <%= link_to "Submissions", student_lesson_submissions_path(@current_code_lesson, student), class:"btn btn-sm float-sm-right btn-success" %>
+                      <%= link_to "View", student, class: "btn btn-sm float-sm-left btn-secondary" %>
+                    </div>
+                  </li>
+                <% else %>
+                  <li class="list-group-item dashboard-list-group-item -student <% if student == @current_student %>-selected<% end %>" data-student-id="<%= student.id %>">
+                    <i class="fas fa-times"></i> <%= student.name %>
+                    <button type="button" class="btn btn-info btn-sm float-sm-right" data-toggle="popover" data-trigger="focus" data-placement="right" title="Submissions & Hints" data-content="Number of submissions: <%= all_submissions.length %> </br>Hint used: <% if most_recent.used_hint %>'Yes <% else %> No <% end %>" data-html="true">Info</button>
+                  </li>
+                  <li class="list-group-item dashboard-list-group-item-info -student" <% unless student == @current_student %>style="display: none;"<% end %>>
+                    <div class="btn-group btn-group-sm" role="group">
+                      <%= link_to "Insight", student_insights_path(student), class: "btn btn-sm float-sm-left btn-secondary" %>
+                      <%= link_to "Submissions", student_lesson_submissions_path(@current_code_lesson, student), class:"btn btn-sm float-sm-right btn-success" %>
+                      <%= link_to "View", student, class: "btn btn-sm float-sm-left btn-secondary" %>
+                    </div>
+                  </li>
+                <% end %>
+              <% else %>
+                <li class="list-group-item dashboard-list-group-item -student <% if student == @current_student %>-selected<% end %>" data-student-id="<%= student.id %>">
+                  <i class="fas fa-ellipsis-h"></i> <%= student.name %>
+                </li>
+                <li class="list-group-item dashboard-list-group-item-info -student" <% unless student == @current_student %>style="display: none;"<% end %>>
+                  <div class="btn-group btn-group-sm" role="group">
+                    <%= link_to "Insight", student_insights_path(student), class: "btn btn-sm float-sm-left btn-secondary" %>
+                  </div>
+                </li>
+              <% end %>
+            <% end %>
+          </div>
+          <% end %>
+        <% end %>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<h2 class="text-center assignments-header">Current Assignments:</h2>
+
+<div class="row">
+  <div class="col-md-6">
+    <% student_in_class = @current_class.students.first %>
+    <% @current_class.outstanding_courses.each do |course| %>
+      <% lesson_in_course = course.tracks.first.code_lessons.first %>
+      <% assignment = lesson_in_course.get_assignment_for(student_in_class) %>
+      <% if assignment != nil %>
+        <div class="card">
+          <div class="card-header">
+            Assignment: <%= course.name %>
+            <%= link_to "Cancel", cancel_assignment_path(assignment), class:"btn btn-sm float-sm-right btn-danger assignment-cancel-btn" %>
+          </div>
+          <div class="card-body">
+            Date started: <%= assignment.date_start.strftime("%A %d-%b-%Y %H:%M:%S") %> </br>
+            Date due: <%= assignment.date_due.strftime("%A %d-%b-%Y %H:%M:%S") %>
+          </div>
+        </div>
+      <% end %>
+    <% end %>
+  </div>
+</div>

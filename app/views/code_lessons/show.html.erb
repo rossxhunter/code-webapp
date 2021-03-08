@@ -1,0 +1,145 @@
+<div id="editor" data-lesson-id ="<%=@code_lesson.id%>"><%= @lesson_starting_code %></div>
+<div id="console">
+  <div id="success-message-icon-container" style="display: none;" class="success-message-fade">
+    <%= image_tag "tick.png", class: 'success-icon' %>
+    <div id="success-message-container">
+      <h7 class="success-message">Passed!</h7>
+    </div>
+  </div>
+  <div id="failure-message-icon-container" style="display:none;" class="failure-message-fade">
+    <%= image_tag "cross.png", class: 'failure-icon' %>
+    <div id="failure-message-container">
+      <h7 class="failure-message">Try Again!</h7>
+    </div>
+  </div>
+</div>
+
+<div id="code_lesson_sidebar">
+  <ul class="nav nav-tabs" role="tablist">
+    <li class="nav-item">
+      <a class="nav-link active" id="home-tab" data-toggle="tab" href="#instructions" role="tab" aria-controls="instructions" aria-selected="true">
+        Instructions
+      </a>
+    </li>
+    <% if student_signed_in? %>
+      <li class="nav-item">
+        <a class="nav-link" id="profile-tab" data-toggle="tab" href="#help" role="tab" aria-controls="help" aria-selected="false">
+          Help
+        </a>
+      </li>
+    <% end %>
+  </ul>
+
+  <div class="tab-content code-lesson-tab-content">
+    <div class="tab-pane fade show active container instructions-container" id="instructions" role="tabpanel" aria-labelledby="home-tab">
+      <h3><%= @code_lesson.name %></h3>
+
+      <h5>Instructions</h5>
+
+      <div class="code-lesson-instructions">
+        <%= @instructions %>
+      </div>
+
+      <div class="collapse" id="collapse_hint">
+        <div class="card card-body"></div>
+      </div>
+
+      <% if teacher_signed_in? %>
+        <div class="btn-group btn-group-sm">
+          <%= link_to "Insights", code_lesson_insights_path(@code_lesson), class: 'btn btn-secondary' %>
+        </div>
+      <% end %>
+
+      <input type="hidden" value="" id="user-code">
+    </div>
+    <div class="tab-pane fade container help-container" id="help" role="tabpanel" aria-labelledby="profile-tab">
+      <% if student_signed_in? %>
+        <% if @live_coding_session && !@live_coding_session.resolved %>
+          Live coding session requested with <%= @live_coding_session.teacher.name %>. Awaiting response...
+        <% else %>
+          <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#live_coding_modal" id="live_coding_session_button">
+            Request live coding session
+          </button>
+          <div id="live_coding_session_requested" style="display: none;">
+            Live Coding Session has been requested...
+          </div>
+        <% end %>
+
+        <ul class="list-unstyled chat-messages">
+          <% @chat.chat_messages.each do |message| %>
+            <% if message.messageable_type == 'Student' %>
+              <li class="media chat-message">
+                <div class="media-body">
+                  <h6><%= message.messageable.name %></h6>
+                  <%= message.message %>
+                </div>
+                <%= image_tag "icon-person-128.png", class: 'chat-message-icon' %>
+              </li>
+            <% else %>
+              <li class="media chat-message">
+                <%= image_tag "icon-person-128.png", class: 'chat-message-icon' %>
+                <div class="media-body">
+                  <h6><%= message.messageable.name %></h6>
+                  <%= message.message %>
+                </div>
+              </li>
+            <% end %>
+          <% end %>
+        </ul>
+
+        <%= form_for @message, remote: true, authenticity_token: true do |f| %>
+          <%= f.label :message %>:
+          <%= f.text_area :message, class: "form-control", data: { textarea: "message" } %>
+
+          <%= f.hidden_field :chat_id, value: @chat.id %>
+          <%= f.submit "Send", class: "btn btn-primary send-message-button" %>
+        <% end %>
+      <% end %>
+    </div>
+  </div>
+</div>
+<div id="reset-next-container">
+  <div id="code_lesson_reset_container">
+    <%= link_to 'Reset Code', '#', id: 'reset-lesson-code', class: 'code-lesson-reset', data: {code_lesson_id: @code_lesson.id} %>
+  </div>
+  <div id="code_lesson_next_container" style="display: none;">
+    <%= link_to 'Next Lesson', '#', id: 'next-lesson', class: 'code-lesson-next', data: {code_lesson_id: @code_lesson.id} %>
+  </div>
+</div>
+
+<div id="code_lesson_submit_container">
+  <% if student_signed_in? %>
+    <%= link_to 'Submit Code', '#', id: 'code-lesson-submit-code', class: 'code-lesson-submit', data: { code_lesson_id: @code_lesson.id } %>
+    <%= link_to 'Hint', '#', class: 'code-lesson-hint', data: { code_lesson_id: @code_lesson.id, student_id: current_student.id } %>
+  <% end %>
+</div>
+
+<div class="modal fade" id="live_coding_modal" tabindex="-1" role="dialog" aria-labelledby="live_coding_modal" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <%= form_for(@new_live_coding_session, remote: true) do |f| %>
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Request live coding session</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <%= f.label :teacher_id %>
+          <%= f.collection_select :teacher_id, @code_lesson.track.course.teachers, :id, :name, { prompt: true }, class: "form-control" %>
+
+          <%= f.hidden_field :code_lesson_id, value: @code_lesson.id %>
+          <%= f.hidden_field :starting_code, id: "live-coding-session-starting-code", value: @lesson_starting_code %>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <%= f.submit 'Request Session', class: 'btn btn-primary' %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>
+
+<% content_for :channels do %>
+  <%= javascript_include_tag 'channels/channels' %>
+<% end %>

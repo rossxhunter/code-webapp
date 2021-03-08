@@ -1,0 +1,70 @@
+.course-list-group {
+
+}
+
+.dashboard-list-group .dashboard-list-group-item:hover {
+  cursor: pointer;
+  background: #eee;
+}
+
+.dashboard-list-group .dashboard-list-group-item {
+  border-bottom: 0;
+}
+
+.dashboard-list-group .dashboard-list-group-item.-selected {
+
+}
+
+.list-group-item {
+  border-radius: 0 !important;
+}
+
+.dashboard-list-group .dashboard-list-group-item:last-child {
+  border-bottom: 1px solid #eee;
+}
+
+.dashboard-list-group .dashboard-list-group-item-info {
+  border-top: 0;
+  border-bottom: 1px solid #eee !important;
+}
+
+.dashboard-list-group .dashboard-list-group-item-info:last-child {
+  border-bottom: 1px solid #eee;
+}
+
+.student-dashboard-list-group-item.-track:hover {
+  cursor: pointer;
+  background: #eee;
+}
+
+.dashboard-list-group-item.-student.list-group-item-danger:hover {
+  background: #ff96a1;
+}
+
+.dashboard-list-group-item.-student.-selected.list-group-item-danger {
+  background: #fcb0b8;
+}
+
+.dashboard-list-group-item.-student.list-group-item-success:hover {
+  background: #9effb4;
+}
+
+.dashboard-list-group-item.-student.-selected.list-group-item-success {
+  background: #b5ffc5;
+}
+
+.dashboard-list-group-item .fa-check {
+  color: #2ecc71;
+}
+
+.dashboard-list-group-item .fa-times {
+  color: #e74c3c;
+}
+
+.class-header {
+  margin-bottom: 20px;
+}
+
+.assignments-header {
+  margin: 40px 0 20px;
+}

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Webapps</title>
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+    <%= action_cable_meta_tag %>
+    <link href="https://fonts.googleapis.com/css?family=Roboto+Mono:400,700" rel="stylesheet">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900" rel="stylesheet">
+    <%= stylesheet_link_tag    'application', media: 'all' %>
+    <%= javascript_include_tag 'application', 'ace/theme-monokai', "ace/mode-#{@code_lesson.language.ace_slug}" %>
+  </head>
+
+  <body data-current-student-id="<%= current_student ? current_student.id : false %>" data-current-user-type="<%= current_user_type %>" <% if @live_coding_session %>data-live-coding-session-id="<%= @live_coding_session.id %>"<% end %>>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
+    <%= render 'layouts/navbar' %>
+
+    <%= yield %>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+    <%= render 'code_lessons/ace_javascript' %>
+
+    <% if controller.controller_name == 'code_lessons' && controller.action_name == 'edit' %>
+      <%= render 'code_lessons/ace_edit_javascript' %>
+    <% end %>
+
+    <%= javascript_include_tag 'code_lessons/code_lessons' %>
+
+    <% unless Rails.env.production? %>
+      <%= yield :channels %>
+    <% end %>
+    <%= yield :extra_js %>
+  </body>
+</html>

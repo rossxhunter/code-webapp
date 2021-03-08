@@ -1,0 +1,53 @@
+<h1 class="display-4"> Insight Page: <%= @student.name %></h1>
+</br>
+
+<h2>Assignment Progress</h2>
+<div class="col-md-12">
+  <% if @student.outstanding_courses.any? %>
+    <% @student.outstanding_courses.each do |course| %>
+      <div class="card">
+        <div class="card-header">
+          <%= course.name %>
+          <% if course.progress(@student) >= 5 %>
+          <div class="progress-bar" role="progressbar" style="width: <%= course.progress(@student) %>%;" aria-valuenow= "<%= course.progress(@student) %>" aria-valuemin="0" aria-valuemax="100">
+            <%= course.progress(@student) %> %
+          </div>
+          <% else %>
+            <p>No progress so far</p>
+          <% end %>
+        </div>
+        <ul class="list-group list-group-flush student-dashboard-list-group -track">
+          <% course.tracks.each do |track| %>
+            <li class="list-group-item student-dashboard-list-group-item -track">
+              <%= track.name %>
+              <% if track.progress(@student) >= 5 %>
+                <div class="progress-bar" role="progressbar" style="width: <%= track.progress(@student) %>%;" aria-valuenow= "<%= track.progress(@student) %>" aria-valuemin="0" aria-valuemax="100">
+                  <%= track.progress(@student) %> %
+                </div>
+              <% else %>
+                <p>No Progress Yet</p>
+              <% end %>
+
+            </li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+  <% end %>
+</br>
+
+
+<% @student.get_tracks_assignments.each do |track| %>
+</br>
+  <h3><%= track.name %></h3>
+  <h4>Submission Counts</h4>
+  <div class="chart-container" style="position: relative;">
+    <canvas id="student_submissions_line_graph<%=track.id%>" data-student-id= "<%= @student.id %>" data-track-id= "<%= track.id %>" class="student_submission_graph"></canvas>
+  </div>
+  </br>
+  <h4>Time Spent On Lessons</h4>
+  <div class="chart-container" style="position: relative;">
+    <canvas id="student_time_line_graph<%=track.id%>" data-student-id= "<%= @student.id %>" data-track-id= "<%= track.id %>" class="student_time_graph"></canvas>
+  </div>
+
+<% end %>

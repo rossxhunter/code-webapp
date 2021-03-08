@@ -1,0 +1,34 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Tracks</h1>
+<br />
+<table class="table table-striped table-hover">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Order</th>
+      <th>Course</th>
+      <th>Description</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @tracks.each do |tracks| %>
+      <tr>
+        <td><%= tracks.name %></td>
+        <td><%= tracks.order %></td>
+        <td><%= tracks.course_id %></td>
+        <td><%= tracks.description %></td>
+        <td><%= link_to 'Show', tracks %> |
+            <%= link_to 'Edit', edit_track_path(tracks) %> |
+            <%= link_to 'Destroy', tracks, method: :delete, data: { confirm: 'Are you sure?' } %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Track', new_course_track_path(@current_course), class: "btn btn-primary" %>

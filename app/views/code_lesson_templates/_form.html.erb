@@ -1,0 +1,52 @@
+<%= form_with(model: code_lesson_template, local: true) do |form| %>
+  <% if code_lesson_template.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(code_lesson_template.errors.count, "error") %> prohibited this code_lesson_template from being saved:</h2>
+
+      <ul>
+      <% code_lesson_template.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= form.label :name %>
+    <%= form.text_field :name %>
+  </div>
+
+  <div class="field">
+    <%= form.label :instruction %>
+    <%= form.text_area :instruction %>
+  </div>
+
+  <div class="field">
+    <%= form.label :hint %>
+    <%= form.text_area :hint %>
+  </div>
+
+  <div class="field">
+    <%= form.label :starting_code %>
+    <%= form.text_area :starting_code %>
+  </div>
+
+  <div class="field">
+    <%= form.label :language_id %>
+    <%= form.number_field :language_id %>
+  </div>
+
+  <div class="field">
+    <%= form.label :order %>
+    <%= form.number_field :order %>
+  </div>
+
+  <div class="field">
+    <%= form.label :track_template_id %>
+    <%= form.number_field :track_template_id %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+<% end %>

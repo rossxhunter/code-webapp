@@ -1,0 +1,82 @@
+<h2 class="display-4"><%= current_student.name %></h2>
+
+<h3 class=>Points: <%= current_student.points %></h3>
+
+
+<div class="row">
+  <% if @submissions.any? && current_student.outstanding_courses.any?%>
+    <div class="col-md-8">
+      <h3>Current Progress</h3>
+      <div class="card text-center">
+        <div class="card-header">
+          <%= @current_course.name %>
+        </div>
+        <div class= "row">
+          <div class= "col-md-8">
+            <div class="card border-secondary">
+              <div class="card-header">
+                <%= @current_track.name %>
+              </div>
+              <li class="list-group-item dashboard-list-group-item-info">
+                <%= @current_code_lesson.name %>
+              </li>
+            </div>
+          </div>
+          <div class= "col-md-4 text-center align-self-center">
+            <%= link_to "Continue", @current_code_lesson, class: "btn btn-primary" %>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  <% end %>
+</div>
+
+<h3>Current Assignments</h3>
+<div class="row">
+  <div class="col-md-12">
+    <% if current_student.outstanding_courses.any? %>
+      <% current_student.outstanding_courses.each do |course| %>
+        <div class="card">
+          <div class="card-header">
+            <%= course.name %>
+            <div class="progress-bar" role="progressbar" style="width: <%= course.progress(current_student) %>%;" aria-valuenow= "<%= course.progress(current_student) %>" aria-valuemin="0" aria-valuemax="100">
+              <% if course.progress(current_student) >= 5 %>
+                <%= course.progress(current_student)%> %
+              <% else %>
+                <p> </p>
+              <% end %>
+            </div>
+          </div>
+          <ul class="list-group list-group-flush student-dashboard-list-group -track">
+            <% course.tracks.each do |track| %>
+              <li class="list-group-item student-dashboard-list-group-item -track">
+                <%= track.name %>
+                <div class="progress-bar" role="progressbar" style="width: <%= track.progress(current_student) %>%;" aria-valuenow= "<%= track.progress(current_student) %>" aria-valuemin="0" aria-valuemax="100">
+                  <% if track.progress(current_student) >= 5 %>
+                    <%= track.progress(current_student) %> %
+                  <% else %>
+                    <p> </p>
+                  <% end %>
+                </div>
+              </li>
+              <ul class="list-group list-group-flush student-dashboard-list-group-item-info -track" style="display: none;">
+                <% track.code_lessons.each do |lesson| %>
+                  <li class="list-group-item">
+                    <% assignment = lesson.get_assignment_for(current_student) %>
+                    <div class="float-right" data-toggle="tooltip" data-placement="top" title="<%= assignment.date_due.strftime("%H:%S %a #{assignment.date_due.day.ordinalize} %b %Y") %>">
+                      Due in <%= time_ago_in_words assignment.date_due %>
+                    </div>
+                    <%= link_to lesson.name, lesson %>
+                  </li>
+                <% end %>
+              </ul>
+            <% end %>
+          </ul>
+        </div>
+      <% end %>
+    <% else %>
+      <li class="list-group-item">No upcoming assignments</li>
+    <% end %>
+  </div>
+</div>

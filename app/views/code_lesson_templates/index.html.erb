@@ -1,0 +1,39 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Code Lesson Templates</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Instruction</th>
+      <th>Hint</th>
+      <th>Starting code</th>
+      <th>Language</th>
+      <th>Order</th>
+      <th>Track template</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @code_lesson_templates.each do |code_lesson_template| %>
+      <tr>
+        <td><%= code_lesson_template.name %></td>
+        <td><%= code_lesson_template.instruction %></td>
+        <td><%= code_lesson_template.hint %></td>
+        <td><%= code_lesson_template.starting_code %></td>
+        <td><%= code_lesson_template.language_id %></td>
+        <td><%= code_lesson_template.order %></td>
+        <td><%= code_lesson_template.track_template_id %></td>
+        <td><%= link_to 'Show', code_lesson_template %></td>
+        <td><%= link_to 'Edit', edit_code_lesson_template_path(code_lesson_template) %></td>
+        <td><%= link_to 'Destroy', code_lesson_template, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Code Lesson Template', new_code_lesson_template_path %>

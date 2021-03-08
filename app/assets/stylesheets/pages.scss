@@ -1,0 +1,60 @@
+// Place all the styles related to the Pages controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+
+body {
+  margin: 0;
+  background: #f6fcff;
+  font-family: 'Roboto', arial, sans-serif;
+}
+
+h2 {
+  font-weight: 600;
+}
+
+.hr-white {
+  border-top-color: #fff;
+}
+
+.container {
+  padding-top: 20px;
+}
+
+#sign_in_sign_up {
+  height: 100%;
+}
+
+#CODE {
+  font-size: 25pt;
+}
+
+.sign_box {
+  margin: 0 auto;
+  text-align: center;
+  width: 100px;
+}
+
+.header-padding {
+  padding-top: 20px;
+  padding-bottom: 40px;
+}
+
+.notification-alert {
+  position: fixed;
+  width: 1000px;
+  top: 100px;
+  z-index: 5;
+  margin-left: -500px;
+  left: 50%;
+}
+
+.nothinghere {
+  color: #666666;
+  text-align: center;
+  border-style: solid;
+  width: 300px;
+  margin: auto;
+  border-radius: 5px;
+  border-width: 1px;
+  padding: 10px;
+}

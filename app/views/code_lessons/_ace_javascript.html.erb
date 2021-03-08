@@ -1,0 +1,33 @@
+<script>
+  var editor_id = 'editor';
+  var editor = ace.edit(editor_id);
+  editor.setTheme("ace/theme/monokai");
+  editor.getSession().setMode("ace/mode/<%= escape_javascript(@code_lesson.language.ace_slug) %>");
+  document.getElementById(editor_id).style.fontSize='16px';
+  editor.getSession().setTabSize(2);
+  editor.getSession().setUseWrapMode(true);
+  editor.getSession().setWrapLimitRange();
+  editor.getSession().on('change', function(e) {
+    $('#user-code').val(editor.getValue());
+    if ( $('body').attr('data-current-user-type') == 'Student' ) {
+      publishLiveCodeSessionData(editor.getValue(), editor.getCursorPosition());
+    }
+
+    if ( $('#live-coding-session-starting-code').length > 0 ) {
+      $('#live-coding-session-starting-code').val(editor.getValue());
+    }
+  });
+
+  var jqconsole = $('#console').jqconsole('', '');
+  var startPrompt = function () {
+    jqconsole.Prompt(true, function (input) {
+      jqconsole.Write(input + '\n', 'jqconsole-output');
+      // Scrolls to bottom when content goes of page
+      $(".jqconsole").animate({
+        scrollTop: $(".jqconsole").height()
+      }, 1000);
+      startPrompt();
+    });
+  };
+  startPrompt();
+</script>

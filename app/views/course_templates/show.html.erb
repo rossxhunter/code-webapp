@@ -1,0 +1,17 @@
+<h1 class=""><%= @course_template.name %></h1>
+
+<div class="row">
+  <% @course_template.track_templates.each do |track| %>
+    <div class="col-md-4">
+      <div class="card text-center">
+        <div class="card-header">
+          <%= link_to track.name, track %>
+        </div>
+        <div class="card-body">
+          <%= track.description %>
+        </div>
+      </div>
+      </br>
+    </div>
+  <% end %>
+</div>

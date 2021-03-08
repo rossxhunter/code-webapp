@@ -1,0 +1,25 @@
+<h1 class="display-4">Leaderboard</h1>
+<p>Every code lesson completed will score 10 points</p>
+<p>Every track completed will score 30 points</p>
+<p>Every course completed will score 50 points</p>
+<table id="student_leaderboard">
+  <thead>
+  <tr>
+    <th>Name</th>
+    <th>Points</th>
+  </tr>
+  </thead>
+  <tbody>
+    <% if teacher_signed_in? %>
+      <% current_user = current_teacher %>
+    <% else %>
+      <% current_user = current_student %>
+    <% end %>
+    <% current_user.organisation.students.each do |s| %>
+      <tr>
+        <td><%= s.name %></td>
+        <td><%= s.points %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

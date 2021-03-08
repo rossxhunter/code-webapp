@@ -1,0 +1,27 @@
+.card {
+  border-radius: 0;
+  -webkit-box-shadow: 3px 3px 5px 1px #ccc;  /* Safari 3-4, iOS 4.0.2 - 4.2, Android 2.3+ */
+  -moz-box-shadow:    3px 3px 5px 1px #ccc;  /* Firefox 3.5 - 3.6 */
+  box-shadow:         3px 3px 5px 1px #ccc;
+}
+
+.card-header {
+  background: #fff;
+  padding: 15px 20px;
+  font-size: 1.2em;
+  font-weight: 900;
+}
+
+.navbar {
+  background: #2196f3;
+}
+
+.navbar.-dark-blue {
+  background: #2669d6;
+}
+
+.navbar .nav-link,
+.navbar .navbar-brand,
+.navbar .navbar-text {
+  color: #fff;
+}

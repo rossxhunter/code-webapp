@@ -1,0 +1,2 @@
+module TrackTemplatesHelper
+end

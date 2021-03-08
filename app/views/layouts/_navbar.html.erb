@@ -1,0 +1,190 @@
+<nav class="navbar navbar-expand-lg <% if controller.controller_name == 'pages' && controller.action_name == 'home' %>-dark-blue<% end %>">
+  <% if teacher_signed_in? %>
+    <%= link_to 'CODE', teacher_dashboard_path, class: 'navbar-brand' %>
+  <% elsif student_signed_in? %>
+    <%= link_to 'CODE', student_dashboard_path, class: 'navbar-brand' %>
+  <% else %>
+    <%= link_to 'CODE', root_path, class: 'navbar-brand' %>
+  <% end %>
+
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarText">
+    <ul class="navbar-nav mr-auto">
+      <% if !teacher_signed_in? && !student_signed_in? %>
+        <li class="nav-item active">
+          <a class="nav-link" href="/">Home</a>
+        </li>
+      <% end %>
+
+      <% if teacher_signed_in?%>
+        <li class="nav-item">
+          <%= link_to teacher_dashboard_path, class: "nav-link" do %>
+            <i class="fas fa-columns"></i>
+            Dashboard
+          <% end %>
+        </li>
+
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <i class="fas fa-users"></i>
+            <%= @current_class.long_name %>
+          </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <% current_teacher.organisation_classes.each do |c| %>
+              <% class_str = c == @current_class ? 'dropdown-item active' : 'dropdown-item' %>
+              <%= link_to c.long_name, change_class_path(c.id), class: class_str %>
+            <% end %>
+            <div class="dropdown-divider"></div>
+            <%= link_to "New Class", new_organisation_class_path, class: 'dropdown-item' %>
+          </div>
+        </li>
+
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <i class="fas fa-users"></i>
+            Manage Students
+          </a>
+
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <%= link_to students_path, class: "dropdown-item" do %>
+              <i class="fas fa-address-card"></i>
+              All Students
+            <% end %>
+            <div class="dropdown-divider"></div>
+            <%= link_to "Leaderboard", students_leaderboard_path, class: 'dropdown-item' %>
+          </div>
+        </li>
+
+        <li class="nav-item">
+          <%= link_to course_templates_path, class: 'nav-link' do %>
+            <i class="fas fa-book"></i>
+            Library
+          <% end %>
+        </li>
+
+        <li class="nav-item">
+          <%= link_to live_coding_sessions_path, class: 'nav-link' do %>
+            <i class="fas fa-broadcast-tower"></i>
+            Students Need Help (<%= current_teacher.unresolved_live_coding_sessions.length %>)
+          <% end %>
+        </li>
+      <% end %>
+
+      <% if student_signed_in? %>
+      <li class="nav-item">
+        <%= link_to student_dashboard_path, class: "nav-link" do %>
+          <i class="fas fa-columns"></i>
+          Dashboard
+        <% end %>
+      </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <i class="fas fa-users"></i>
+            Classes
+          </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <% current_student.organisation_classes.each do |c| %>
+              <% class_str = c == @current_class ? 'dropdown-item active' : 'dropdown-item' %>
+              <%= link_to c.long_name, change_class_path(c.id), class: class_str %>
+            <% end %>
+          </div>
+        </li>
+        <li class="nav-item">
+          <%= link_to student_old_assignments_path(current_student.id), class: "nav-link" do %>
+            <i class="fa fa-book" aria-hidden="true"></i>
+            My Old Assignments
+          <% end %>
+        </li>
+
+        <li class="nav-item">
+          <%= link_to students_leaderboard_path, class: "nav-link" do %>
+            <i class="fa fa-book" aria-hidden="true"></i>
+            Leaderboard
+          <% end %>
+        </li>
+      <% end %>
+    </ul>
+
+    <ul class="navbar-nav right-nav">
+      <% if controller.controller_name == 'code_lessons' %>
+
+        <% if controller.action_name == 'show' || controller.action_name == 'edit' %>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              <i class="fas fa-terminal"></i>
+              Track: <%= @code_lesson.track.name %>
+            </a>
+            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+              <% @code_lesson.track.code_lessons.order(:order).each do |code_lesson| %>
+                <% class_str = code_lesson == @code_lesson ? "dropdown-item active" : "dropdown-item" %>
+                <%= link_to code_lesson.name, code_lesson, class: class_str %>
+              <% end %>
+            </div>
+          </li>
+        <% end %>
+
+        <% if controller.action_name == 'show' %>
+          <% if teacher_signed_in? %>
+            <li class="nav-item">
+              <%= link_to edit_code_lesson_path(@code_lesson), class: 'nav-link edit-code-lesson' do %>
+                <i class="fas fa-pencil-alt"></i>
+                Edit
+              <% end %>
+            </li>
+          <% end %>
+        <% end %>
+      <% end %>
+
+      <% if controller.controller_name == 'live_coding_sessions' && controller.action_name == 'show' && teacher_signed_in? %>
+        <li class="nav-item">
+          <%= link_to edit_code_lesson_path(@code_lesson), class: 'nav-link edit-code-lesson' do %>
+            <i class="fas fa-pencil-alt"></i>
+            Edit Lesson
+          <% end %>
+        </li>
+      <% end %>
+
+      <% if controller.controller_name == 'code_lessons' && controller.action_name == 'edit' %>
+        <li class="nav-item">
+          <%= link_to @code_lesson, class: 'nav-link edit-code-lesson' do %>
+            <i class="far fa-eye"></i>
+            Show
+          <% end %>
+        </li>
+      <% end %>
+
+      <% if teacher_signed_in? %>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <i class="fas fa-user"></i>
+            <%= current_teacher.name %>
+          </a>
+          <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+            <%= link_to destroy_teacher_session_path, method: :delete, class: "dropdown-item" do %>
+              <i class="fas fa-sign-out-alt"></i>
+              Logout
+            <% end %>
+          </div>
+        </li>
+      <% end %>
+
+      <% if student_signed_in? %>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <i class="fas fa-user"></i>
+            <%= current_student.name %>
+          </a>
+          <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+            <%= link_to destroy_student_session_path, method: :delete, class: "dropdown-item" do %>
+              <i class="fas fa-sign-out-alt"></i>
+              Logout
+            <% end %>
+            <%= link_to "Edit", edit_student_path(current_student), class: "dropdown-item"%>
+          </div>
+        </li>
+      <% end %>
+    </ul>
+  </div>
+</nav>

@@ -1,0 +1,20 @@
+<h1>Live Coding Session Requests</h1>
+
+<div class="row">
+  <% @live_coding_sessions.each do |live_coding_session| %>
+    <div class="col-md-4">
+      <div class="card text-center">
+        <div class="card-header">
+          Request from <%= link_to live_coding_session.student.name, live_coding_session.student %>
+        </div>
+        <div class="card-body">
+          <p class="card-text">For Code Lesson: <%= live_coding_session.code_lesson.name %></p>
+        </div>
+        <div class="card-footer text-muted">
+          <%= link_to 'Resolve', resolve_live_coding_session_path(live_coding_session), class: 'btn btn-secondary' %>
+          <%= link_to 'Join Students Environment', live_coding_session_path(live_coding_session), class: 'btn btn-primary' %>
+        </div>
+      </div>
+    </div>
+  <% end %>
+</div>

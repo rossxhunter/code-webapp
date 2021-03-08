@@ -1,0 +1,27 @@
+<div id="editor" readonly><%= @submission.code %></div>
+<div id="console"></div>
+<div id="hint-container"></div>
+<div id="code_lesson_sidebar">
+  <div class="container">
+    <h3><%= @code_lesson.name %></h3>
+
+    <h5>Instructions</h5>
+
+    <div class="code-lesson-instructions">
+      <%= @instructions %>
+    </div>
+
+    <div class="collapse" id="collapse_hint">
+      <div class="card card-body"></div>
+    </div>
+
+    <input type="hidden" value="" id="user-code">
+
+  </div>
+</div>
+
+<% content_for :extra_js do %>
+  <script>
+    editor.setReadOnly(true);
+  </script>
+<% end %>

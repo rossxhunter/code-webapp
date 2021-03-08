@@ -1,0 +1,11 @@
+<h1 class="display-4"><%= @student.name %> Profile:</h1>
+</br>
+
+<h3>Badges:</h3>
+<div>
+  <% rand_num_badge = 1 + rand(6) %>
+  <% rand_num_badge.times do |i| %>
+    <% rand_badge = 1 + rand(6) %>
+    <%= image_tag "#{rand_badge}.png" %>
+  <% end %>
+</div>
